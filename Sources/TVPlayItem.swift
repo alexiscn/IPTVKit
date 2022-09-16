@@ -54,4 +54,11 @@ public extension TVPlayItem {
         }
         return nil
     }
+    
+    var hasValidTVG: Bool {
+        if let tvg = tvg, let name = tvg.name, !name.isEmpty, !tvg.id.isEmpty {
+            return true
+        }
+        return false
+    }
 }
