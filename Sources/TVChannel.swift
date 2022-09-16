@@ -1,7 +1,7 @@
 import Foundation
 
 /// The channel of epg. 
-public struct Channel: Hashable, Codable {
+public struct TVChannel: Hashable, Codable {
     
     /// The id of channel
     public let id: String

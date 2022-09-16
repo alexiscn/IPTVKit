@@ -1,5 +1,5 @@
 
-public struct Programme: Hashable, Codable {
+public struct TVProgramme: Hashable, Codable {
     
     enum CodingKeys: String, CodingKey {
         case start

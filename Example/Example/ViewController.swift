@@ -8,11 +8,11 @@ class ViewController: UIViewController {
     
     var collectionView: UICollectionView!
     
-    var dataSource: UICollectionViewDiffableDataSource<Section, PlaylistItem>!
+    var dataSource: UICollectionViewDiffableDataSource<Section, TVPlayItem>!
     
     let loadingIndicator = UIActivityIndicatorView(style: .medium)
     
-    var playlist: Playlist?
+    var playlist: TVPlaylist?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +41,12 @@ class ViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        let registration = UICollectionView.CellRegistration<UICollectionViewListCell, PlaylistItem> { (cell, indexPath, item) in
+        let registration = UICollectionView.CellRegistration<UICollectionViewListCell, TVPlayItem> { (cell, indexPath, item) in
             var content = cell.defaultContentConfiguration()
             content.text = item.name
             cell.contentConfiguration = content
         }
-        dataSource = UICollectionViewDiffableDataSource<Section, PlaylistItem>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+        dataSource = UICollectionViewDiffableDataSource<Section, TVPlayItem>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             return collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: itemIdentifier)
         })
     }
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
                 let playlist = try await loadPlaylist()
                 self.playlist = playlist
                 
-                var snapshot = NSDiffableDataSourceSnapshot<Section, PlaylistItem>()
+                var snapshot = NSDiffableDataSourceSnapshot<Section, TVPlayItem>()
                 snapshot.appendSections([.main])
                 snapshot.appendItems(playlist.items, toSection: .main)
                 dataSource.apply(snapshot)
@@ -75,7 +75,7 @@ class ViewController: UIViewController {
         view.addSubview(loadingIndicator)
     }
     
-    private func loadPlaylist() async throws -> Playlist {
+    private func loadPlaylist() async throws -> TVPlaylist {
         try await withUnsafeThrowingContinuation({ ct in
             let url = URL(string: "https://raw.githubusercontent.com/vamoschuck/TV/main/M3U")!
             let name = "vamoschuck"
@@ -84,7 +84,7 @@ class ViewController: UIViewController {
                 if let error = error {
                     ct.resume(throwing: error)
                 } else if let data = data, let text = String(data: data, encoding: .utf8) {
-                    if let playlist = IPTVKit.Parser.parse(text: text, name: name, url: url) {
+                    if let playlist = TVParser.parse(text: text, name: name, url: url) {
                         ct.resume(returning: playlist)
                     } else {
                         ct.resume(throwing: NSError())

@@ -1,13 +1,13 @@
 import Foundation
 
 /// The groupped PlaylistItem.
-public struct Group: Hashable, Codable {
+public struct TVGroup: Hashable, Codable {
     
     /// The title of the group. read from `group-title`.
     public let title: String
     
     /// The playlist items in the group.
-    public var items: [PlaylistItem] = []
+    public var items: [TVPlayItem] = []
     
     public var isFavorites = false
     

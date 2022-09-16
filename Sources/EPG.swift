@@ -17,9 +17,9 @@ public struct EPG: Hashable, Codable {
         return formatter
     }()
     
-    public let channels: [Channel]
+    public let channels: [TVChannel]
     
-    public let programs: [Programme]
+    public let programs: [TVProgramme]
     
     public var updateDate = Date.distantPast
     
@@ -27,13 +27,13 @@ public struct EPG: Hashable, Codable {
         Date().timeIntervalSince1970 - updateDate.timeIntervalSince1970 < 12 * 60 * 60
     }
     
-    public init(channels: [Channel], programs: [Programme]) {
+    public init(channels: [TVChannel], programs: [TVProgramme]) {
         self.channels = channels
         self.programs = programs
     }
     
     public init?(data: Data) throws {
-        var programs = [Programme]()
+        var programs = [TVProgramme]()
         
         let doc = try Kanna.XML(xml: data, encoding: .utf8)
         let formatter = DateFormatter()
@@ -41,12 +41,12 @@ public struct EPG: Hashable, Codable {
         var hasSetTimeZone = false
         var today = ""
     
-        var channels = [Channel]()
+        var channels = [TVChannel]()
         let channelElements = doc.xpath("//channel", namespaces: nil)
         channelElements.forEach { element in
             if let id = element.at_xpath("@id")?.text,
                let name = element.at_xpath("//display-name")?.text {
-                let channel = Channel(id: id, name: name)
+                let channel = TVChannel(id: id, name: name)
                 channels.append(channel)
             }
         }
@@ -76,7 +76,7 @@ public struct EPG: Hashable, Codable {
                 
                 if start.hasPrefix(today) {
                     let channelName = channels.first(where: { $0.id == channelId })?.name
-                    let program = Programme(start: start, stop: stop, channel: channelId, channelName: channelName, title: title, desc: desc)
+                    let program = TVProgramme(start: start, stop: stop, channel: channelId, channelName: channelName, title: title, desc: desc)
                     programs.append(program)
                 }
             }

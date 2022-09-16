@@ -1,6 +1,6 @@
 import Foundation
 
-public enum IPTVError: LocalizedError {
+public enum TVError: LocalizedError {
     case invalidFormat
     case remoteURLAccessFailure
     

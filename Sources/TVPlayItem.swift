@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-public class PlaylistItem: Hashable, Codable {
+public class TVPlayItem: Hashable, Codable {
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -27,7 +27,7 @@ public class PlaylistItem: Hashable, Codable {
     
     public var guide: EPG? = nil
     
-    public var programs: [Programme] = []
+    public var programs: [TVProgramme] = []
     
     public init(name: String, tvg: TVG?, group: String, url: String, raw: String) {
         self.name = name
@@ -37,11 +37,21 @@ public class PlaylistItem: Hashable, Codable {
         self.raw = raw
     }
     
-    public static func == (lhs: PlaylistItem, rhs: PlaylistItem) -> Bool {
+    public static func == (lhs: TVPlayItem, rhs: TVPlayItem) -> Bool {
         return lhs.identifier == rhs.identifier
     }
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(identifier)
+    }
+}
+
+public extension TVPlayItem {
+    
+    var logoURL: URL? {
+        if let string = tvg?.logo {
+            return URL(string: string)
+        }
+        return nil
     }
 }

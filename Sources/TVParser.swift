@@ -1,10 +1,10 @@
 import Foundation
 
-public struct Parser {
+public struct TVParser {
  
-    public static func parse(text: String, name: String, url: URL) -> Playlist? {
-        var items: [PlaylistItem] = []
-        var current: PlaylistItem?
+    public static func parse(text: String, name: String, url: URL) -> TVPlaylist? {
+        var items: [TVPlayItem] = []
+        var current: TVPlayItem?
         var epgUrl: String?
         var group: String?
         text.enumerateLines { line, stop in
@@ -26,7 +26,7 @@ public struct Parser {
                 tvg.logo = info.getAttribute("tvg-logo")?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 tvg.url = info.getAttribute("tvg-url")
 
-                let item = PlaylistItem(name: name, tvg: tvg, group: group, url: "", raw: info)
+                let item = TVPlayItem(name: name, tvg: tvg, group: group, url: "", raw: info)
 
                 current = item
             } else if let url = URL(string: line.replacingOccurrences(of: " ", with: "")) {
@@ -45,7 +45,7 @@ public struct Parser {
                     }
                     
                     if let url = URL(string: tail) {
-                        let item = PlaylistItem(name: name, tvg: nil, group: group ?? "", url: url.absoluteString, raw: line)
+                        let item = TVPlayItem(name: name, tvg: nil, group: group ?? "", url: url.absoluteString, raw: line)
                         items.append(item)
                     } else {
                         group = name
@@ -66,7 +66,7 @@ public struct Parser {
         guard items.count > 0 else {
             return nil
         }
-        let playlist = Playlist(name: name, url: url)
+        let playlist = TVPlaylist(name: name, url: url)
         playlist.items = items
         playlist.epgUrls = epgUrl
         playlist.parseGroups()

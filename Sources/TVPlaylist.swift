@@ -1,16 +1,16 @@
 import Foundation
 
-public class Playlist: Hashable, Codable {
+public class TVPlaylist: Hashable, Codable {
 
     public let identifier: String
     
     public var name: String
     
-    public var items: [PlaylistItem] = []
+    public var items: [TVPlayItem] = []
     
-    public var groups: [Group] = []
+    public var groups: [TVGroup] = []
     
-    public var current: PlaylistItem? = nil
+    public var current: TVPlayItem? = nil
     
     public var url: URL
     
@@ -24,7 +24,7 @@ public class Playlist: Hashable, Codable {
         self.url = url
     }
     
-    public static func == (lhs: Playlist, rhs: Playlist) -> Bool {
+    public static func == (lhs: TVPlaylist, rhs: TVPlaylist) -> Bool {
         return lhs.identifier == rhs.identifier
     }
     
@@ -33,12 +33,12 @@ public class Playlist: Hashable, Codable {
     }
     
     public func parseGroups() {
-        var result: [Group] = []
+        var result: [TVGroup] = []
         for item in items {
             if var group = result.first(where: { $0.title == item.group }) {
                 group.items.append(item)
             } else {
-                var group = Group(title: item.group)
+                var group = TVGroup(title: item.group)
                 group.items.append(item)
                 result.append(group)
             }
