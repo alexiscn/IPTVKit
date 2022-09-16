@@ -38,8 +38,7 @@ public class TVPlaylist: Hashable, Codable {
             if var group = result.first(where: { $0.title == item.group }) {
                 group.items.append(item)
             } else {
-                var group = TVGroup(title: item.group)
-                group.items.append(item)
+                let group = TVGroup(title: item.group, items: [item])
                 result.append(group)
             }
         }
