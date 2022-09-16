@@ -7,11 +7,10 @@ public struct TVGroup: Hashable, Codable {
     public let title: String
     
     /// The playlist items in the group.
-    public var items: [TVPlayItem] = []
+    public var items: [TVPlayItem]
     
-    public var isFavorites = false
-    
-    public init(title: String) {
+    public init(title: String, items: [TVPlayItem]) {
         self.title = title
+        self.items = items
     }
 }
