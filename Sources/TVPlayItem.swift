@@ -15,17 +15,21 @@ public class TVPlayItem: Hashable, Codable {
     
     public var name: String = ""
     
+    /// The tvg info of the item.
     public var tvg: TVG? = nil
     
+    /// The group of the item belonged to.
     public var group: String = ""
     
+    /// The playing url
     public var url: String = ""
     
     public var raw: String = ""
     
     public var favorited = false
     
-    public var guide: EPG? = nil
+    /// The epg info.
+    public var epg: EPG? = nil
     
     public var programs: [TVProgramme] = []
     
