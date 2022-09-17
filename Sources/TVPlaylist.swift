@@ -35,8 +35,10 @@ public class TVPlaylist: Hashable, Codable {
     public func parseGroups() {
         var result: [TVGroup] = []
         for item in items {
-            if var group = result.first(where: { $0.title == item.group }) {
+            if let index = result.firstIndex(where: { $0.title == item.group }) {
+                var group = result[index]
                 group.items.append(item)
+                result[index] = group
             } else {
                 let group = TVGroup(title: item.group, items: [item])
                 result.append(group)
