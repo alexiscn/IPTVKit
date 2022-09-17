@@ -6,12 +6,8 @@ A simple IPTV toolkit.
 
 - support `M3U`, `TXT` format playlist
 - support EPG
-
-
-## Denpendency
-
-- Kanna - used to parse epg xml
-
+- support TVG
+- support iOS 14+, tvOS 14+, macOS 12+
 
 ## Models
 
