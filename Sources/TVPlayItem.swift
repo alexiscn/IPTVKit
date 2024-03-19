@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 public class TVPlayItem: Hashable, Codable {
     

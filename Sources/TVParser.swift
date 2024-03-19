@@ -9,7 +9,7 @@ public struct TVParser {
         var group: String?
         text.enumerateLines { line, stop in
             if line == "\r\n" {
-                print(line)
+                // do nothing
             } else if line.hasPrefix("#EXTM3U") {
                 let info = line.replacingOccurrences(of: "#EXTINF:", with: "")
                 epgUrl = info.getAttribute("url-tvg")
@@ -24,12 +24,13 @@ public struct TVParser {
                 tvg.language = info.getAttribute("tvg-language")
                 tvg.country = info.getAttribute("tvg-country")
                 tvg.logo = info.getAttribute("tvg-logo")?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                tvg.url = info.getAttribute("tvg-url")
+                tvg.url = info.getAttribute("tvg-url")?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 
                 let item = TVPlayItem(name: name, tvg: tvg, group: group, url: "", raw: info)
 
                 current = item
-            } else if let url = URL(string: line.replacingOccurrences(of: " ", with: "")) {
+            } else if let str = line.replacingOccurrences(of: " ", with: "").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                        let url = URL(string: str) {
                 current?.url = url.absoluteString
                 if let item = current {
                     items.append(item)
@@ -44,7 +45,7 @@ public struct TVParser {
                        tail = valid
                     }
                     
-                    if let url = URL(string: tail) {
+                    if let str = tail.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) {
                         let item = TVPlayItem(name: name, tvg: nil, group: group ?? "", url: url.absoluteString, raw: line)
                         items.append(item)
                     } else {
@@ -52,7 +53,7 @@ public struct TVParser {
                     }
                 }
             } else {
-                if let url = URL(string: line) {
+                if let str = line.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) {
                     current?.url = url.absoluteString
                     if let item = current {
                         items.append(item)
