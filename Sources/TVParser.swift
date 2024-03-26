@@ -24,13 +24,12 @@ public struct TVParser {
                 tvg.language = info.getAttribute("tvg-language")
                 tvg.country = info.getAttribute("tvg-country")
                 tvg.logo = info.getAttribute("tvg-logo")?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                tvg.url = info.getAttribute("tvg-url")?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                tvg.url = info.getAttribute("tvg-url")
 
                 let item = TVPlayItem(name: name, tvg: tvg, group: group, url: "", raw: info)
 
                 current = item
-            } else if let str = line.replacingOccurrences(of: " ", with: "").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                        let url = URL(string: str) {
+            } else if let url = URL(string: line.replacingOccurrences(of: " ", with: "")) {
                 current?.url = url.absoluteString
                 if let item = current {
                     items.append(item)
@@ -45,7 +44,7 @@ public struct TVParser {
                        tail = valid
                     }
                     
-                    if let str = tail.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) {
+                    if let url = URL(string: tail) {
                         let item = TVPlayItem(name: name, tvg: nil, group: group ?? "", url: url.absoluteString, raw: line)
                         items.append(item)
                     } else {
@@ -53,7 +52,7 @@ public struct TVParser {
                     }
                 }
             } else {
-                if let str = line.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) {
+                if let url = URL(string: line) {
                     current?.url = url.absoluteString
                     if let item = current {
                         items.append(item)
