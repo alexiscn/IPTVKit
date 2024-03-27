@@ -22,6 +22,12 @@ extension String {
         }
         return nil
     }
+    
+    var urlEncoded: String {
+        let str = self.replacingOccurrences(of: " ", with: "%20")
+        let allowedCharacters = CharacterSet(charactersIn: #"!$^*;'"`<>(){}|"#).inverted
+        return (str as NSString).addingPercentEncoding(withAllowedCharacters: allowedCharacters) ?? self
+    }
 }
 
 extension Digest {
