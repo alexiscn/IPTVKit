@@ -56,9 +56,8 @@ public struct EPG: Hashable, Codable {
             if let start = element.at_xpath("@start")?.text,
                let stop = element.at_xpath("@stop")?.text,
                let channelId = element.at_xpath("@channel")?.text,
-               let title = element.at_xpath("//title")?.text,
-                let desc = element.at_xpath("//desc")?.text {
-                
+               let title = element.at_xpath("//title")?.text {
+                let desc = element.at_xpath("//desc")?.text
                 if !hasSetTimeZone, start.count == 20 {
                     let op = String(start[start.index(start.startIndex, offsetBy: 15)..<start.index(start.startIndex, offsetBy: 16)])
                     let time = String(start[start.index(start.startIndex, offsetBy: 16)..<start.endIndex])

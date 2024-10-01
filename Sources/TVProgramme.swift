@@ -25,5 +25,5 @@ public struct TVProgramme: Hashable, Codable {
     public let title: String
     
     /// The desc of the programme.
-    public let desc: String
+    public let desc: String?
 }
